@@ -69,9 +69,9 @@
       var matrix = deviceOrientation.getScreenAdjustedMatrix();
       var euler = deviceOrientation.getScreenAdjustedEuler();
       ctx.fillStyle = "red";
-      ctx.fillEllipse(quaternion.x,quaternion.y, 10*quaternion.z,10*quaternion.z);
+      ctx.fillEllipse(width/2 + 10*quaternion.x,height/2 + 10*quaternion.y, 10*quaternion.z,10*quaternion.z);
       ctx.fillStyle = "blue";
-      ctx.fillEllipse(euler.alpha,euler.beat, 10*euler.gamma,10*euler.gamma);
+      ctx.fillEllipse(width/2 + 10*euler.alpha, height/2 + 10*euler.beta, 20*euler.gamma,20*euler.gamma);
 
       // Do something with our quaternion, matrix, euler objects...
       //console.debug(quaternion);
@@ -89,9 +89,9 @@
        var acc = deviceMotion.getScreenAdjustedAcceleration();
        var accGrav = deviceMotion.getScreenAdjustedAccelerationIncludingGravity();
        ctx.fillStyle = "yellow";
-        ctx.fillEllipse(acc.x,acc.y, 10*acc.z,10*acc.z);
+        ctx.fillEllipse(width/2 + 10*acc.x,height/2 + 10*acc.y, 10*acc.z,10*acc.z);
         ctx.fillStyle = "green";
-        ctx.fillEllipse(accGrav.x,accGrav.y, 10*accGrav.z,10*accGrav.z);
+        ctx.fillEllipse(width/2 + 10*accGrav.x,height/2 + 10*accGrav.y, 10*accGrav.z,10*accGrav.z);
 
       // Do something with our quaternion, matrix, euler objects...
       //console.debug(quaternion);
