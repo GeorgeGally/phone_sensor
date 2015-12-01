@@ -95,7 +95,7 @@
         ctx.fillStyle = "green";
         greenx = tween(greenx, width/2-map(acc.x, -0.2, 0.2, 0, width), 40);
         greeny = tween(greeny, map(accGrav.y, -2,10, 0, height), 20);
-        ctx.fillEllipse(width/2 + 30*accGrav.x,greeny, 20+10*accGrav.z,20+10*accGrav.z);
+        ctx.fillEllipse(greenx,greeny, 20+10*accGrav.z,20+10*accGrav.z);
 
       // Do something with our quaternion, matrix, euler objects...
       //console.debug(quaternion);
