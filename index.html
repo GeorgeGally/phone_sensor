@@ -71,8 +71,8 @@
       var matrix = deviceOrientation.getScreenAdjustedMatrix();
       var euler = deviceOrientation.getScreenAdjustedEuler();
       
-      ctx.fillStyle = "blue";
-      ctx.fillEllipse(5*euler.alpha, 5*euler.beta, 5*euler.gamma,5*euler.gamma);
+      // ctx.fillStyle = "blue";
+      // ctx.fillEllipse(5*euler.alpha, 5*euler.beta, 5*euler.gamma,5*euler.gamma);
 
 
       // Do something with our quaternion, matrix, euler objects...
@@ -97,7 +97,7 @@
         greeny = tween(greeny, map(accGrav.y, -2,10, 0, height), 40);
         ctx.fillEllipse(greenx,greeny, 20+10*accGrav.z,20+10*accGrav.z);
         ctx.fillStyle = rgba(255,255,255,0.7);
-        milk = map(220-greeny/2, 0, height/2, 20, 100);
+        milk = map(220-greeny/2, 0, height/2, 20, 200);
         ctx.HfillEllipse(width/2,greeny/2-120, width-120, milk);
       // Do something with our quaternion, matrix, euler objects...
       //console.debug(quaternion);
