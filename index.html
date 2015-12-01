@@ -93,8 +93,8 @@
       ctx.fillStyle = "yellow";
       ctx.fillEllipse(width/2 + 30*acc.x,height/2 + 30*acc.y, 10*acc.z,10*acc.z);
         ctx.fillStyle = "green";
-        greeny = tween(greenx, width/2 + 30*accGrav.x, 20);
-        ctx.fillEllipse(greenx,height/2 + 80*accGrav.y, 20+10*accGrav.z,20+10*accGrav.z);
+        greeny = tween(greeny, height/2 + 80*accGrav.y, 20);
+        ctx.fillEllipse(width/2 + 30*accGrav.x,height/2 + 80*accGrav.y, 20+10*accGrav.z,20+10*accGrav.z);
 
       // Do something with our quaternion, matrix, euler objects...
       //console.debug(quaternion);
