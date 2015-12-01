@@ -69,9 +69,7 @@
       var quaternion = deviceOrientation.getScreenAdjustedQuaternion();
       var matrix = deviceOrientation.getScreenAdjustedMatrix();
       var euler = deviceOrientation.getScreenAdjustedEuler();
-      ctx.fillStyle = "red";
-      redy = tween(redy, map(quaternion.y, 0,1, 0, height), 20);
-      ctx.fillEllipse(width/2 + 300*quaternion.x,redy, 120,120);
+      
       ctx.fillStyle = "blue";
       ctx.fillEllipse(5*euler.alpha, 5*euler.beta, 5*euler.gamma,5*euler.gamma);
 
@@ -106,6 +104,11 @@
       $('#gravity').html("<br>gravity<br> x: "+accGrav.x + " <br>y: "+accGrav.y + " <br>z: "+accGrav.z)
     }
     if (deviceOrientation && deviceMotion) {
+
+      ctx.fillStyle = "red";
+      redy = tween(redy, map(quaternion.y, 0,1, 0, height), 20);
+      ctx.fillEllipse(greenx/2,redy, 120,120);
+
     ctx.fillStyle = "orange";
     ctx.fillEllipse(width/2 + 1000*quaternion.z,greeny, 5*euler.gamma,5*euler.gamma);
   }
