@@ -70,7 +70,7 @@
       var matrix = deviceOrientation.getScreenAdjustedMatrix();
       var euler = deviceOrientation.getScreenAdjustedEuler();
       ctx.fillStyle = "red";
-      ctx.fillEllipse(width/2 + 100*quaternion.x,height/2 + 100*quaternion.y, 1000*quaternion.z,1000*quaternion.z);
+      ctx.fillEllipse(width/2 + 300*quaternion.x,height/2 + 300*quaternion.y, 120,120);
       ctx.fillStyle = "blue";
       ctx.fillEllipse(5*euler.alpha, 5*euler.beta, 5*euler.gamma,5*euler.gamma);
 
