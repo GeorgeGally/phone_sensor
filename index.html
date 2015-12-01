@@ -91,7 +91,7 @@
        var acc = deviceMotion.getScreenAdjustedAcceleration();
        var accGrav = deviceMotion.getScreenAdjustedAccelerationIncludingGravity();
       ctx.fillStyle = "yellow";
-      ctx.fillEllipse(30*acc.x,height/2 + 30*acc.y, 10*acc.z,10*acc.z);
+      ctx.fillEllipse(width/2-60*acc.x,height/2 + 30*acc.y, 10*acc.z,10*acc.z);
         ctx.fillStyle = "green";
         greenx = tween(greenx, map(euler.gamma, -20, 20, 0, width), 40);
         greeny = tween(greeny, map(accGrav.y, -2,10, 0, height), 20);
