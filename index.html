@@ -20,6 +20,7 @@
   var height = h = window.innerHeight;
   ctx = canvas.getContext('2d');
 
+  var milk = 0;
   var greenx = 0;
   var greeny = redy = height/2;
   // Create a new FULLTILT Promise for e.g. *compass*-based deviceorientation data
@@ -96,7 +97,8 @@
         greeny = tween(greeny, map(accGrav.y, -2,10, 0, height), 40);
         ctx.fillEllipse(greenx,greeny, 20+10*accGrav.z,20+10*accGrav.z);
         ctx.fillStyle = rgba(0,0,240,0.7);
-        ctx.HfillEllipse(width/2,greeny/2-80, width-90,220-greeny/2);
+        milk = map(milk, height/2, 220-greeny/2, 20, 100);
+        ctx.HfillEllipse(width/2,greeny/2-120, width-120, milk);
       // Do something with our quaternion, matrix, euler objects...
       //console.debug(quaternion);
       //console.debug(matrix);
