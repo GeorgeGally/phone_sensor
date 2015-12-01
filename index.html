@@ -106,7 +106,7 @@
     if (deviceOrientation && deviceMotion) {
 
       ctx.fillStyle = "red";
-      redy = tween(redy, map(quaternion.y, 0,1, 0, height), 20);
+      redy = tween(redy, map(quaternion.y, -1,2, 0, height), 20);
       ctx.fillEllipse(greenx/2,redy, 120,120);
 
     ctx.fillStyle = "orange";
