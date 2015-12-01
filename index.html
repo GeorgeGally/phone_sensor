@@ -103,7 +103,7 @@
     }
     if (deviceOrientation && deviceMotion) {
     ctx.fillStyle = "orange";
-    ctx.fillEllipse(width/2 + 100*quaternion.z,height/2 +10*accGrav.z, 20,20);
+    ctx.fillEllipse(width/2 + 200*quaternion.z,height/2 -10*accGrav.z, 50,50);
   }
     // Execute function on each browser animation frame
     requestAnimationFrame(draw);
