@@ -95,13 +95,16 @@
         ctx.fillStyle = "green";
         greenx = tween(greenx, map(euler.gamma, -15, 15, 0, width), 50);
         greeny = tween(greeny, map(accGrav.y, -2,10, 0, height), 40);
-        ctx.rotate(greenx/4);
+
         ctx.fillEllipse(greenx,greeny, 20+10*accGrav.z,20+10*accGrav.z);
         ctx.fillStyle = rgba(255,255,255,0.7);
+
+
         milk = map(220-greeny/2, 0, height/2, 20, 300);
         ctx.HfillEllipse(width/2,greeny/2-180, width-160, milk);
+        ctx.rotate(radians(greenx/4));
         ctx.HfillEllipse(width/2,height-greeny/4+220, width-390, milk);
-        ctx.rotate(-greenx/4);
+        ctx.rotate(radians(-greenx/4));
       // Do something with our quaternion, matrix, euler objects...
       //console.debug(quaternion);
       //console.debug(matrix);
