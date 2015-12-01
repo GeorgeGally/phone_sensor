@@ -1,0 +1,95 @@
+<!DOCTYPE HTML>
+<html>
+
+  <head>
+    <title>Dodgem</title>
+    <script src="bower_components/fulltilt/dist/fulltilt.min.js"></script>
+    <script src="bower_components/es6-promise/promise.min.js"></script>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  </head>  
+<body> 
+<script>
+  // Create a new FULLTILT Promise for e.g. *compass*-based deviceorientation data
+  var promise = new FULLTILT.getDeviceOrientation({ 'type': 'world' });
+
+  // FULLTILT.DeviceOrientation instance placeholder
+  var deviceOrientation;
+  var deviceMotion;
+
+  promise
+    .then(function(controller) {
+      // Store the returned FULLTILT.DeviceOrientation object
+      deviceOrientation = controller;
+    })
+    .catch(function(message) {
+      console.error(message);
+
+      // Optionally set up fallback controls...
+      // initManualControls();
+    });
+
+    var promise_motion = FULLTILT.getDeviceMotion();
+
+    promise_motion
+  .then(function(controller) {
+      deviceMotion = controller;
+      // Use `deviceMotion` object to interact with device motion sensors
+    }
+  ).catch(
+    function(message) {
+      // Device Motion Events are not supported
+
+      // Implement manual fallback controls instead...
+    }
+  );
+
+
+
+  (function draw() {
+
+    // If we have a valid FULLTILT.DeviceOrientation object then use it
+    if (deviceOrientation) {
+
+      // Obtain the *screen-adjusted* normalized device rotation
+      // as Quaternion, Rotation Matrix and Euler Angles objects
+      // from our FULLTILT.DeviceOrientation object
+      var quaternion = deviceOrientation.getScreenAdjustedQuaternion();
+      var matrix = deviceOrientation.getScreenAdjustedMatrix();
+      var euler = deviceOrientation.getScreenAdjustedEuler();
+
+      // Do something with our quaternion, matrix, euler objects...
+      //console.debug(quaternion);
+      //console.debug(matrix);
+      //console.debug(euler);
+      $('#quaternion').text("quaternion x: "+quaternion.x + " y: "+quaternion.y + " z: "+quaternion.z + " w: "+quaternion.w)
+      $('#euler').text("euler alpha z: "+euler.alpha + " beta x: "+euler.beta + " gamma z: "+euler.gamma)
+    }
+
+    if (deviceMotion) {
+
+      // Obtain the *screen-adjusted* normalized device rotation
+      // as Quaternion, Rotation Matrix and Euler Angles objects
+      // from our FULLTILT.DeviceOrientation object
+       var acc = deviceMotion.getScreenAdjustedAcceleration();
+       var accGrav = deviceMotion.getScreenAdjustedAccelerationIncludingGravity();
+      // Do something with our quaternion, matrix, euler objects...
+      //console.debug(quaternion);
+      //console.debug(matrix);
+      //console.debug(acc);
+      $('#motion').text("motion x: "+acc.x + " y: "+acc.y + " z: "+acc.z)
+      $('#gravity').text("gravity x: "+accGrav.x + " y: "+accGrav.y + " z: "+accGrav.z)
+    }
+
+
+    // Execute function on each browser animation frame
+    requestAnimationFrame(draw);
+
+  })();
+</script>
+<div id="quaternion"></div>
+<div id="matrix"></div>
+<div id="euler"></div>
+<div id="motion"></div>
+<div id="gravity"></div>
+</body> 
+</html> 
