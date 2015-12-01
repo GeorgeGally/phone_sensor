@@ -92,7 +92,7 @@
       ctx.fillStyle = "yellow";
       ctx.fillEllipse(width/2-60*acc.x,height/2 + 30*acc.y, 10*acc.z,10*acc.z);
         ctx.fillStyle = "green";
-        greenx = tween(greenx, map(euler.gamma, -20, 20, 0, width), 40);
+        greenx = tween(greenx, map(euler.gamma, -15, 15, 0, width), 50);
         greeny = tween(greeny, map(accGrav.y, -2,10, 0, height), 40);
         ctx.fillEllipse(greenx,greeny, 20+10*accGrav.z,20+10*accGrav.z);
 
