@@ -89,8 +89,8 @@
       // from our FULLTILT.DeviceOrientation object
        var acc = deviceMotion.getScreenAdjustedAcceleration();
        var accGrav = deviceMotion.getScreenAdjustedAccelerationIncludingGravity();
-      ctx.fillStyle = "yellow";
-      ctx.fillEllipse(width/2-60*acc.x,height/2 + 30*acc.y, 10*acc.z,10*acc.z);
+      // ctx.fillStyle = "yellow";
+      // ctx.fillEllipse(width/2-60*acc.x,height/2 + 30*acc.y, 10*acc.z,10*acc.z);
         ctx.fillStyle = "green";
         greenx = tween(greenx, map(euler.gamma, -15, 15, 0, width), 50);
         greeny = tween(greeny, map(accGrav.y, -2,10, 0, height), 40);
@@ -105,12 +105,12 @@
     }
     if (deviceOrientation && deviceMotion) {
 
-      ctx.fillStyle = "red";
-      redy = tween(redy, map(quaternion.y, -1,2, 0, height), 20);
-      ctx.fillEllipse(greenx/2,redy, 120,120);
+      // ctx.fillStyle = "red";
+      // redy = tween(redy, map(quaternion.y, -1,2, 0, height), 20);
+      // ctx.fillEllipse(greenx/2,redy, 120,120);
 
-    ctx.fillStyle = "orange";
-    ctx.fillEllipse(width/2 + 1000*quaternion.z,greeny, 5*euler.gamma,5*euler.gamma);
+    // ctx.fillStyle = "orange";
+    // ctx.fillEllipse(width/2 + 1000*quaternion.z,greeny, 5*euler.gamma,5*euler.gamma);
   }
     // Execute function on each browser animation frame
     requestAnimationFrame(draw);
