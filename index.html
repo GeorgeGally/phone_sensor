@@ -71,7 +71,7 @@
       ctx.fillStyle = "red";
       ctx.fillEllipse(width/2 + 100*quaternion.x,height/2 + 100*quaternion.y, 1000*quaternion.z,1000*quaternion.z);
       ctx.fillStyle = "blue";
-      ctx.fillEllipse(width/2 + 10*euler.alpha, 10*euler.beta, 5*euler.gamma,5*euler.gamma);
+      ctx.fillEllipse(10*euler.alpha, 10*euler.beta, 5*euler.gamma,5*euler.gamma);
 
 
       // Do something with our quaternion, matrix, euler objects...
@@ -92,7 +92,7 @@
        ctx.fillStyle = "yellow";
         ctx.fillEllipse(width/2 + 30*acc.x,height/2 + 30*acc.y, 10*acc.z,10*acc.z);
         ctx.fillStyle = "green";
-        ctx.fillEllipse(width/2 + 30*accGrav.x,height/2 + 30*accGrav.y, 20+10*accGrav.z,20+10*accGrav.z);
+        ctx.fillEllipse(width/2 + 30*accGrav.x,height/2 + 80*accGrav.y, 20+10*accGrav.z,20+10*accGrav.z);
 
       // Do something with our quaternion, matrix, euler objects...
       //console.debug(quaternion);
@@ -103,7 +103,7 @@
     }
     if (deviceOrientation && deviceMotion) {
     ctx.fillStyle = "orange";
-    ctx.fillEllipse(width/2 + 1000*quaternion.z,height/2 -10*accGrav.z, 50,50);
+    ctx.fillEllipse(width/2 + 1000*quaternion.z,height/2 -10*accGrav.z, 150,150);
   }
     // Execute function on each browser animation frame
     requestAnimationFrame(draw);
