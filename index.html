@@ -21,7 +21,7 @@
   ctx = canvas.getContext('2d');
 
   var greenx = 0;
-  var greeny = height/2;
+  var greeny = redy = height/2;
   // Create a new FULLTILT Promise for e.g. *compass*-based deviceorientation data
   var promise = new FULLTILT.getDeviceOrientation({ 'type': 'world' });
 
@@ -70,7 +70,8 @@
       var matrix = deviceOrientation.getScreenAdjustedMatrix();
       var euler = deviceOrientation.getScreenAdjustedEuler();
       ctx.fillStyle = "red";
-      ctx.fillEllipse(width/2 + 300*quaternion.x,height/2 + 300*quaternion.y, 120,120);
+      redy = tween(redy, map(quaternion.y, 0,1, 0, height), 20);
+      ctx.fillEllipse(width/2 + 300*quaternion.x,redy, 120,120);
       ctx.fillStyle = "blue";
       ctx.fillEllipse(5*euler.alpha, 5*euler.beta, 5*euler.gamma,5*euler.gamma);
 
