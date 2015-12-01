@@ -73,6 +73,7 @@
       ctx.fillStyle = "blue";
       ctx.fillEllipse(width/2 + 10*euler.alpha, height/2 + 10*euler.beta, 5*euler.gamma,5*euler.gamma);
 
+
       // Do something with our quaternion, matrix, euler objects...
       //console.debug(quaternion);
       //console.debug(matrix);
@@ -100,8 +101,10 @@
       $('#motion').html("<br>motion<br> x: "+acc.x + " <br>y: "+acc.y + " <br>z: "+acc.z)
       $('#gravity').html("<br>gravity<br> x: "+accGrav.x + " <br>y: "+accGrav.y + " <br>z: "+accGrav.z)
     }
-
-
+    if (deviceOrientation && deviceMotion) {
+    ctx.fillStyle = "orange";
+    ctx.fillEllipse(width/2 + 100*quaternion.z,height/2 +10*accGrav.z, 20,20);
+  }
     // Execute function on each browser animation frame
     requestAnimationFrame(draw);
 
