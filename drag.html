@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html>
+
+  <head>
+    <title>Dodgem</title>
+
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+
+    <script src="js/creative.js"></script>
+    <script src="js/jquery.finger.js"></script>
+  </head>  
+<body style="background: #ccc;"> 
+<canvas id="c"></canvas>
+<script>
+ var canvas = document.getElementById('c');
+  canvas.width=200;
+  canvas.height=200;
+  canvas.overlay=this;
+  var width = w = 200;
+  var height = h = 200;
+  ctx = canvas.getContext('2d');
+  ctx.fillstyle = "red";
+  ctx.fillEllipse(w/2, h/2, 150,150);
+  $( document ).ready(function() {
+  $(canvas).on('flick', function(e) {
+    console.log(e.adx, e);
+    console.log(e.ady, e);
+    $(canvas).css('left', e.adx);
+    $(canvas).css('top', e.ady);
+
+});
+})
+</script>
+<div id="quaternion"></div>
+<div id="matrix"></div>
+<div id="euler"></div>
+<div id="motion"></div>
+<div id="gravity"></div>
+</body> 
+</html> 
