@@ -8,9 +8,10 @@
 
     <script src="js/creative.js"></script>
     <script src="js/jquery.finger.js"></script>
+
   </head>  
 <body style="background: #ccc;"> 
-<canvas id="c"></canvas>
+<canvas id="c" style="position: absolute; top: 0; left: 0"></canvas>
 <script>
  var canvas = document.getElementById('c');
   canvas.width=200;
@@ -28,6 +29,12 @@
     $(canvas).css('left', e.adx);
     $(canvas).css('top', e.ady);
 
+});
+  // direct event
+$(canvas).on('drag', function(e) {
+    console.log(e.adx);
+    $(canvas).css('left', e.adx);
+    $(canvas).css('top', e.ady);
 });
 })
 </script>
