@@ -103,9 +103,9 @@
         milk = map(220-greeny/2, 0, height/2, 20, 300);
         ctx.translate(width/2,height/2);
         ctx.rotate(radians(greenx/150));
-        ctx.HfillEllipse(width/2,greeny/2-180, width-160, milk);
+        ctx.HfillEllipse(0,greeny/2-180-height/2, width-160, milk);
         
-        ctx.HfillEllipse(width/2,height-greeny/4+220, width-390, milk);
+        ctx.HfillEllipse(0,height-greeny/4+220-height/2, width-390, milk);
         ctx.rotate(radians(-greenx/150));
         ctx.translate(-width/2,-height/2);
       // Do something with our quaternion, matrix, euler objects...
