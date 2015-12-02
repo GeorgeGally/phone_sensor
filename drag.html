@@ -17,14 +17,14 @@
 
 <script>
  var canvas = document.getElementById('c');
-  canvas.width=200;
-  canvas.height=200;
+  canvas.width=400;
+  canvas.height=400;
   canvas.overlay=this;
-  var width = w = 200;
-  var height = h = 200;
+  var width = w = 400;
+  var height = h = 400;
   ctx = canvas.getContext('2d');
   ctx.fillstyle = "red";
-  ctx.fillEllipse(w/2, h/2, 150,150);
+  ctx.fillEllipse(w/2, h/2, 350,350);
   var x = y = 0;
   $( document ).ready(function() {
   $(canvas).on('flick', function(e) {
