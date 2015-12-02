@@ -25,19 +25,24 @@
   ctx = canvas.getContext('2d');
   ctx.fillstyle = "red";
   ctx.fillEllipse(w/2, h/2, 150,150);
+  var x = y = 0;
   $( document ).ready(function() {
   $(canvas).on('flick', function(e) {
     console.log(e.adx, e);
     console.log(e.ady, e);
-    $(canvas).css('left', e.adx);
-    $(canvas).css('top', e.ady);
+    x = tween(x, e.adx, 2);
+    y = tween(y, e.ady, 2);
+    $(canvas).css('left', x);
+    $(canvas).css('top', y);
 
 });
   // direct event
 $(canvas).on('drag', function(e) {
     console.log(e.adx);
-    $(canvas).css('left', e.adx);
-    $(canvas).css('top', e.ady);
+    x = tween(x, e.adx, 2);
+    y = tween(y, e.ady, 2);
+    $(canvas).css('left', x);
+    $(canvas).css('top', y);
 });
 })
 </script>
