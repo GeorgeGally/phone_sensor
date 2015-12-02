@@ -30,8 +30,8 @@
   $(canvas).on('flick', function(e) {
     console.log(e.adx, e);
     console.log(e.ady, e);
-    x = tween(x, x + e.adx, 5);
-    y = tween(y, y + e.ady, 5);
+    x = tween(x, e.adx, 5);
+    y = tween(y, e.ady, 5);
     $(canvas).css('left', x);
     $(canvas).css('top', y);
 
@@ -39,8 +39,8 @@
   // direct event
 $(canvas).on('drag', function(e) {
     console.log(e.adx);
-    x = tween(x, x + e.adx, 5);
-    y = tween(y, y + e.ady, 5);
+    x = tween(x, e.adx, 5);
+    y = tween(y, e.ady, 5);
     $(canvas).css('left', x);
     $(canvas).css('top', y);
 });
