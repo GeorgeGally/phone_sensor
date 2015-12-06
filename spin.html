@@ -19,7 +19,8 @@
 		<script src="build/three.min.js"></script>
 
 		<script src="js/renderers/Projector.js"></script>
-		<script src="js/renderers/CanvasRenderer.js"></script>
+		
+		<script src="js/renderers/WebGlRenderer.js"></script>
 		<script src="js/loaders/STLLoader.js"></script>
 		<script src="js/Detector.js"></script>
 		
@@ -40,11 +41,11 @@
 			var cube, plane, oreo;
 			var speedx, speedy = 0;
 			var info;
-			var targetRotation = 0;
-			var targetRotationOnMouseDown = 0;
-			var targetPositionX = 0;
-			var targetPositionXOnMouseDown = 0;
-			var targetPositionY = 0;
+			var targetRotationX = targetRotationY = 0;
+			var targetRotationOnMouseDownX = targetRotationOnMouseDownY = 0;
+			var targetPositionX = targetPositionY = 0;
+			var targetPositionXOnMouseDown = targetPositionXOnMouseDown = 0;
+		
 			var targetPositionYOnMouseDown = 0;
 
 			var mouseX = 0;
@@ -141,7 +142,7 @@
 
 				oreo = new THREE.Object3D();//create an empty container
 
-				var geometry = new THREE.CylinderGeometry( 5, 5, 0.5, 32 );
+				var geometry = new THREE.CylinderGeometry( 5, 5, 0.5, 42 );
 				var material = new THREE.MeshBasicMaterial( {color: 0x330000} );
 				var oreo1 = new THREE.Mesh( geometry, material );
 				
@@ -151,7 +152,7 @@
 				
 				oreo2.position.set(0, -0.5, 0 );
 
-				var geometry = new THREE.CylinderGeometry( 4, 4, 0.5, 32 );
+				var geometry = new THREE.CylinderGeometry( 4, 4, 0.5, 22 );
 				var material = new THREE.MeshBasicMaterial( {color: 0xffffff});
 				var cream = new THREE.Mesh( geometry, material );
 				
@@ -184,7 +185,7 @@
 				
 				
 
-				renderer = new THREE.CanvasRenderer();
+				renderer = new THREE.WebGLRenderer();
 				renderer.setClearColor( 0xf0f0f0 );
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
@@ -232,7 +233,8 @@
 
 				mouseXOnMouseDown = event.clientX - windowHalfX;
 				mouseYOnMouseDown = event.clientY - windowHalfY;
-				targetRotationOnMouseDown = targetRotation;
+				targetRotationOnMouseDownX = targetRotationX;
+				targetRotationOnMouseDownY = targetRotationY;
 				targetPositionXOnMouseDown = targetPositionX;
 				targetPositionYOnMouseDown = targetPositionY;
 
@@ -243,7 +245,8 @@
 				mouseX = event.clientX - windowHalfX;
 				mouseY = event.clientY - windowHalfY;
 
-				targetRotation = targetRotationOnMouseDown + ( mouseX - mouseXOnMouseDown ) * 0.009;
+				targetRotationX = targetRotationOnMouseDownX + ( mouseX - mouseXOnMouseDown ) * 0.009;
+				targetRotationY = targetRotationOnMouseDownY + ( mouseY - mouseXOnMouseDown ) * 0.009;
 
 				targetPositionY = targetPositionYOnMouseDown + ( mouseY - mouseYOnMouseDown ) * -2;
 
@@ -277,7 +280,8 @@
 
 					mouseXOnMouseDown = event.touches[ 0 ].pageX - windowHalfX;
 					mouseYOnMouseDown = event.touches[ 0 ].pageY - windowHalfY;
-					targetRotationOnMouseDown = targetRotation;
+					targetRotationOnMouseDownX = targetRotationX;
+					targetRotationOnMouseDownY = targetRotationY;
 					targetPositionXOnMouseDown = targetPositionX;
 					targetPositionYOnMouseDown = targetPositionY;
 
@@ -293,7 +297,8 @@
 
 					mouseX = event.touches[ 0 ].pageX - windowHalfX;
 					mouseY = event.touches[ 0 ].pageY - windowHalfY;
-					targetRotation = targetRotationOnMouseDown + ( mouseX - mouseXOnMouseDown ) * 0.009;
+					targetRotationX = targetRotationOnMouseDownX + ( mouseX - mouseXOnMouseDown ) * 0.009;
+					targetRotationY = targetRotationOnMouseDownY + ( mouseY - mouseYOnMouseDown ) * 0.009;
 					targetPositionX = targetPositionXOnMouseDown + ( mouseX - mouseXOnMouseDown ) * 0.05;
 					targetPositionY = targetPositionYOnMouseDown + ( mouseY - mouseYOnMouseDown ) * -2;
 
@@ -314,16 +319,14 @@
 
 			function render() {
 				checkTilt();
-				// oreo.rotation.y = cube.rotation.y += ( targetRotation - cube.rotation.y ) * 0.05;
-				// oreo.position.y = cube.position.y += ( targetPosition - cube.position.y ) * 0.05;
-				//oreo.rotation.z += 12;
+				
 				speedx = toDec((targetPositionX - oreo.position.x)) / 100;
 				speedy = toDec((targetPositionY - oreo.position.y)) / 100;
 				
 				oreo.position.x += ( targetPositionX - oreo.position.x ) * 0.5;
 				oreo.position.y += ( targetPositionY - oreo.position.y ) * 0.5;
-				oreo.rotation.z += ( targetRotation - oreo.rotation.z ) * 0.5;
-				
+				oreo.rotation.z += ( targetRotationX - oreo.rotation.z ) * 0.5;
+				oreo.rotation.x += ( targetRotationY - oreo.rotation.x ) * 0.5;
 
 				renderer.render( scene, camera );
 
@@ -345,7 +348,8 @@
 
 		    //targetPositionX = tween(targetPositionX, 500*quaternion.x , 10);
 		    //targetPositionY = tween(targetPositionY, 500*quaternion.y, 10);
-		    targetRotation = tween(targetRotation, radians(5*euler.gamma), 15);
+		    targetRotationX = tween(targetRotationX, radians(5*euler.gamma), 15);
+		    targetRotationY = tween(targetRotationY, radians(90+5*euler.beta), 15);
 			}
 		}
 
