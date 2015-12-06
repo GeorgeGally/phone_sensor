@@ -285,10 +285,10 @@
 
 					mouseXOnMouseDown = event.touches[ 0 ].pageX - windowHalfX;
 					mouseYOnMouseDown = event.touches[ 0 ].pageY - windowHalfY;
-					targetRotationOnMouseDownX = targetRotationX;
-					targetRotationOnMouseDownY = targetRotationY;
-					//targetPositionXOnMouseDown = targetPositionX;
-					//targetPositionYOnMouseDown = targetPositionY;
+					// targetRotationOnMouseDownX = targetRotationX;
+					// targetRotationOnMouseDownY = targetRotationY;
+					targetPositionXOnMouseDown = targetPositionX;
+					targetPositionYOnMouseDown = targetPositionY;
 
 				}
 
@@ -302,10 +302,10 @@
 
 					mouseX = event.touches[ 0 ].pageX - windowHalfX;
 					mouseY = event.touches[ 0 ].pageY - windowHalfY;
-					targetRotationX = targetRotationOnMouseDownX + ( mouseX - mouseXOnMouseDown ) * 0.009;
-					targetRotationY = targetRotationOnMouseDownY + ( mouseY - mouseYOnMouseDown ) * 0.009;
-					//targetPositionX = targetPositionXOnMouseDown + ( mouseX - mouseXOnMouseDown ) * 0.05;
-					//targetPositionY = targetPositionYOnMouseDown + ( mouseY - mouseYOnMouseDown ) * -2;
+					// targetRotationX = targetRotationOnMouseDownX + ( mouseX - mouseXOnMouseDown ) * 0.009;
+					// targetRotationY = targetRotationOnMouseDownY + ( mouseY - mouseYOnMouseDown ) * 0.009;
+					targetPositionX = targetPositionXOnMouseDown + ( mouseX - mouseXOnMouseDown ) * 0.05;
+					targetPositionY = targetPositionYOnMouseDown + ( mouseY - mouseYOnMouseDown ) * -2;
 
 				}
 
