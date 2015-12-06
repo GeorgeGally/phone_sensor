@@ -56,6 +56,10 @@
 			var windowHalfY = window.innerHeight / 2;
 
 			var light1, light2;
+			var spotLight;
+
+			var mapHeight = THREE.ImageUtils.loadTexture( "img/Oreo.png" );
+			mapHeight.anisotropy = 14;
 
 			// Create a new FULLTILT Promise for e.g. *compass*-based deviceorientation data
 			var promise = new FULLTILT.getDeviceOrientation({ 'type': 'world' });
@@ -115,15 +119,24 @@
 
 				scene = new THREE.Scene();
 
-				// LIGHTS
 
-				// light1 = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 );
-				// light1.color.setHSL( 0.6, 1, 0.6 );
-				// light1.groundColor.setHSL( 0.095, 1, 0.75 );
-				// light1.position.set( 10, 500, 100 );
-				// scene.add( light1 );
+				spotLight = new THREE.SpotLight( 0xffffbb, 2 );
+				spotLight.position.set( 0.5, 0, 1 );
+				spotLight.position.multiplyScalar( 700 );
+				scene.add( spotLight );
 
-				//
+				spotLight.castShadow = true;
+				// spotLight.shadowCameraVisible = true;
+
+				spotLight.shadowMapWidth = 2048;
+				spotLight.shadowMapHeight = 2048;
+
+				spotLight.shadowCameraNear = 200;
+				spotLight.shadowCameraFar = 1500;
+
+				spotLight.shadowCameraFov = 40;
+
+				spotLight.shadowBias = -0.015;
 
 				light2 = new THREE.DirectionalLight( 0xffffff, 1 );
 				light2.color.setHSL( 0.1, 1, 0.95 );
@@ -140,23 +153,73 @@
         		scene.add(ambientLight); 
 
 				
-
+				var mapUrl = "img/Oreo_pic.png";
+        		var map = THREE.ImageUtils.loadTexture(mapUrl);
+        		
 				oreo = new THREE.Object3D();//create an empty container
 
-				var geometry = new THREE.CylinderGeometry( 5, 5, 0.5, 42 );
-				var material = new THREE.MeshPhongMaterial( {color: 0x330000} );
-				var oreo1 = new THREE.Mesh( geometry, material );
 				
-				oreo1.position.set(0, 0.5, 0 );
+
+
+			var geometry = new THREE.CylinderGeometry( 5, 5, 0.6, 42, false );
+			var material = new THREE.MeshPhongMaterial( {
+					map: map, 
+					color: 0x110000,
+					specular: 0x222222,
+					// shininess: 5,
+					// bumpMap: mapHeight,
+					// bumpScale: 52
+				} );
+
+
+				// var materialTop = new THREE.MeshPhongMaterial({map:map});
+				// var materialSide = new THREE.MeshPhongMaterial({color: 0x330000});
+				// var materialBottom = new THREE.MeshPhongMaterial({map:map});
+				// var materialsArray = [];
+				// materialsArray.push(materialTop); //materialindex = 0
+				// materialsArray.push(materialSide); // materialindex = 1
+				// materialsArray.push(materialBottom); // materialindex = 2
+				// var material = new THREE.MeshFaceMaterial(materialsArray);
+
+				// var aFaces = geometry.faces.length;
+				// for(var i=0;i<aFaces;i++) {
+				//   if(i < 64){
+				//     geometry.faces[i].materialIndex = 0;
+				//   }else if(i > 63 && i < 96){
+				//     geometry.faces[i].materialIndex = 1;
+				//   }else{
+				//     geometry.faces[i].materialIndex = 2;
+				//   }
+				// }
+
+			var oreo1 = new THREE.Mesh( geometry, material );
+				
+				oreo1.position.set(0, 0.6, 0 );
 
 				var oreo2 = new THREE.Mesh( geometry, material );
 				
-				oreo2.position.set(0, -0.5, 0 );
+				oreo2.position.set(0, -0.6, 0 );
 
-				var geometry = new THREE.CylinderGeometry( 4.8, 4.8, 0.5, 22 );
+				var geometry = new THREE.CylinderGeometry( 4.6, 4.6, 0.5, 32, false );
 				var material = new THREE.MeshBasicMaterial( {color: 0xffffff});
 				var cream = new THREE.Mesh( geometry, material );
 				
+				geometry1 = new THREE.PlaneBufferGeometry(11,11);
+			material1 = new THREE.MeshBasicMaterial({ 
+    			map: map, transparent: true, 
+    			//doubleSided: false
+    			//color: 0xff0000,
+    			//overdraw: 0.5 // for canvas renderer only
+			});
+
+			var mesh1 = new THREE.Mesh(geometry1, material1);
+			mesh1.rotation.x = - Math.PI / 2;
+			mesh1.position.set(0, 1, 0 );
+			oreo.add(mesh1);
+			var mesh2 = new THREE.Mesh(geometry1, material1);
+			mesh2.rotation.x =  Math.PI / 2;
+			mesh2.position.set(0, -1.2, 0 );
+			oreo.add(mesh2);
 				oreo1.castShadow = true;
 				oreo1.receiveShadow = true;
 				oreo2.castShadow = true;
@@ -167,35 +230,19 @@
 				oreo.scale.set( 30, 30, 30 );
 				oreo.rotateX( - Math.PI / 2 );
 				scene.add( oreo );
-				// oreo.position.x = window.innerWidth / 2;
-				// oreo.position.y = window.innerHeight / 2;
-				// var loader = new THREE.STLLoader();
+		
 
-				// loader.load( './models/Oreo2.stl', function ( geometry ) {
-
-				// 	var material = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0xaaaaaa, shininess: 400 } );
-					
-				// 	oreo = new THREE.Mesh( geometry, material );
-
-				// 	oreo.position.set( 0, 0, 0 );
-				// 	oreo.rotation.set( - Math.PI / 2, 0, 0 );
-				// 	oreo.scale.set( 120, 120, 120 );
-
-				// 	oreo.castShadow = true;
-				// 	oreo.receiveShadow = true;
-
-				//scene.add( oreo );
-				// animate();
-				// } );
-
-				
-				
-
-				renderer = new THREE.WebGLRenderer();
+				renderer = new THREE.WebGLRenderer( { antialias: false } );
 				renderer.setClearColor( 0xf0f0f0 );
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
 				container.appendChild( renderer.domElement );
+
+				//renderer.shadowMap.enabled = true;
+				//renderer.shadowMap.cullFace = THREE.CullFaceBack;
+
+				renderer.gammaInput = true;
+				renderer.gammaOutput = true;
 
 
 
@@ -356,7 +403,7 @@
 		    var euler = deviceOrientation.getScreenAdjustedEuler();
 		    var acc = deviceMotion.getScreenAdjustedAcceleration();
        		var accGrav = deviceMotion.getScreenAdjustedAccelerationIncludingGravity();
-       		info.innerHTML = 'Speed: ' + speedx + ", " + speedy + ".<br> Rot: " + toDec(degrees(oreo.rotation.z)) + ' quaternion.x: ' + toDec(quaternion.x) + ' euler.gamma: ' + toDec(euler.gamma);
+       		info.innerHTML = 'Speed: ' + toDec(speedx) + ", " + toDec(speedy) + ".<br> Rot: " + toDec(degrees(oreo.rotation.z)) + ' quaternion.x: ' + toDec(quaternion.x) + ' euler.gamma: ' + toDec(euler.gamma);
 
 		    //targetPositionX = tween(targetPositionX, 500*quaternion.x , 10);
 		    //targetPositionY = tween(targetPositionY, 500*quaternion.y, 10);
