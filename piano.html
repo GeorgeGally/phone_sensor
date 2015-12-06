@@ -1,0 +1,389 @@
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js webgl - objects controls</title>
+		<meta charset="utf-8">
+		<style>
+			body {
+				margin: 0px;
+				color: #fff;
+				font-family:Monospace;
+				text-align: center;
+				font-size: 15px;
+				line-height: 30px;
+				overflow: hidden;
+			}
+			#info {
+				position: absolute;
+				top: 0px; width: 100%;
+				padding: 15px;
+				z-index:100;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="info">
+			<a href="http://threejs.org" target="_blank">three.js</a> - look console
+		</div>
+
+		<script src="build/three.min.js"></script>
+
+		<script src="js/libs/stats.min.js"></script>
+
+	
+		<script src="js/controls/EventsControls.js"></script>
+		<script src="js/creative.js"></script>
+		<script src="bower_components/fulltilt/dist/fulltilt.min.js"></script>
+    	<script src="bower_components/es6-promise/promise.min.js"></script>
+    	<script src="bower_components/jquery/dist/jquery.min.js"></script>
+
+
+		<script>
+
+
+			var camera, scene, renderer, controls;
+			var oreo;
+			var speedx = 0; speedy = 0;
+			var rotx = 0; roty = 0;
+			var hit = false; var down = false;
+			var targetRotationX = targetRotationY = 0;
+			var targetRotationOnMouseDownX = targetRotationOnMouseDownY = 0;
+			var targetPositionX = targetPositionY = 0;
+			var targetPositionXOnMouseDown = targetPositionXOnMouseDown = 0;
+		
+			var targetPositionYOnMouseDown = 0;
+
+			var mouseX = 0;
+			var mouseXOnMouseDown = 0;
+			var mouseY = 0;
+			var mouseYOnMouseDown = 0;
+
+			var windowHalfX = window.innerWidth / 2;
+			var windowHalfY = window.innerHeight / 2;
+
+			var light1, light2;
+			var spotLight;
+
+			var promise = new FULLTILT.getDeviceOrientation({ 'type': 'world' });
+
+			// FULLTILT.DeviceOrientation instance placeholder
+			var deviceOrientation;
+			var deviceMotion;
+
+			promise
+			    .then(function(controller) {
+			      // Store the returned FULLTILT.DeviceOrientation object
+			      deviceOrientation = controller;
+			    })
+			    .catch(function(message) {
+			      console.error(message);
+
+			      // Optionally set up fallback controls...
+			      // initManualControls();
+			    });
+
+			    var promise_motion = FULLTILT.getDeviceMotion();
+
+			promise_motion
+			  .then(function(controller) {
+			      deviceMotion = controller;
+			      // Use `deviceMotion` object to interact with device motion sensors
+			    }
+			  ).catch(
+			
+			function(message) {
+			      // Device Motion Events are not supported
+
+			      // Implement manual fallback controls instead...
+			    }
+			  );
+
+			init();
+			animate();
+
+			function init() {
+
+				renderer = new THREE.WebGLRenderer( { antialias: true } ); 
+				renderer.setClearColor( 0xe7e7e7 );
+				renderer.setSize( window.innerWidth, window.innerHeight );				
+				document.body.appendChild( renderer.domElement );
+
+				//
+
+				stats = new Stats();
+				stats.domElement.style.position = 'absolute';
+				stats.domElement.style.top = '0px';
+				stats.domElement.style.zIndex = 100;
+				document.body.appendChild( stats.domElement );
+
+				//
+
+				// camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 000 );				
+				// camera.position.set( 50, 200, 300 );
+				// camera.lookAt( new THREE.Vector3( 0, 0, 0 ) );
+
+				camera = new THREE.PerspectiveCamera( 65, window.innerWidth / window.innerHeight, 0.1, 1000 );
+				//camera.position.y = 50;
+				camera.position.z = 25;
+
+				
+				scene = new THREE.Scene();
+
+				var light = new THREE.DirectionalLight( 0xffffff, 1 );
+				light.position.set( 0, 500, 1000 );
+				scene.add( light );
+
+				var light = new THREE.AmbientLight( 0x222222 );
+				scene.add( light );
+
+				EventsControls = new EventsControls( camera, renderer.domElement );
+
+
+				// piano
+				var mapUrl = "img/Oreo_pic.png";
+        		var map = THREE.ImageUtils.loadTexture(mapUrl);
+        		
+        		oreo = new THREE.Object3D();//create an empty container
+
+        		var geometry = new THREE.CylinderGeometry( 5, 5, 0.6, 42, false );
+				
+				var material = new THREE.MeshPhongMaterial( {
+					//map: map, 
+					color: 0x110000,
+					specular: 0x222222,
+					// shininess: 5,
+					// bumpMap: mapHeight,
+					// bumpScale: 52
+				} );
+
+			var oreo1 = new THREE.Mesh( geometry, material );
+			oreo1.position.set(0, 0, 0.6);
+			oreo1.rotation.x = - Math.PI / 2;
+
+			var oreo2 = new THREE.Mesh( geometry, material );			
+			oreo2.position.set(0, 0, -0.6);
+			oreo2.rotation.x = - Math.PI / 2;
+
+			var geometry = new THREE.CylinderGeometry( 4.6, 4.6, 0.5, 32, false );
+			var material = new THREE.MeshBasicMaterial( {color: 0xffffff});
+			var cream = new THREE.Mesh( geometry, material );
+			cream.rotation.x = - Math.PI / 2;
+
+			geometry1 = new THREE.PlaneBufferGeometry(10.7,10.7);
+			material1 = new THREE.MeshBasicMaterial({ 
+    		map: map, transparent: true, 
+    			//doubleSided: false
+    			color: rgba(100,100,100,0),
+    			overdraw: 0.5 // for canvas renderer only
+			});
+
+			var mesh1 = new THREE.Mesh(geometry1, material1);
+			//mesh1.rotation.x = - Math.PI / 2;
+			mesh1.position.set(0, 0, 1 );
+			
+
+			var mesh2 = new THREE.Mesh(geometry1, material1);
+			mesh2.rotation.x =  Math.PI;
+			mesh2.position.set(0, 0, -1.2 );
+			
+			// oreo1.castShadow = true;
+			// oreo1.receiveShadow = true;
+			// oreo2.castShadow = true;
+			// oreo2.receiveShadow = true;
+
+			oreo.add(mesh1);
+			oreo.add(mesh2);
+			oreo.add( oreo1 );
+			oreo.add( cream );
+			oreo.add( oreo2 );
+			oreo.scale.set( 1, 1, 1 );
+			//oreo.rotation.x =  - Math.PI / 2 ;
+			scene.add( oreo );
+	
+			EventsControls.attach( oreo );
+
+			EventsControls.attachEvent( 'mouseOver', function () {
+				//console.log("hit");
+				hit = true;
+				//oreo.scale.set( 0.84, 0.84, 0.84 );
+				this.container.style.cursor = 'pointer';
+				this.container.addEventListener( 'mousedown', onDocumentMouseDown, false );
+				
+				this.container.addEventListener( 'mouseup', onDocumentMouseUp, false );
+				this.container.addEventListener( 'mouseout', onDocumentMouseOut, false );
+
+				this.container.addEventListener( 'dragout', onDocumentMouseOut, false );
+
+				});
+
+				EventsControls.attachEvent( 'onclick', function () {
+					down = true;
+					//onDocumentMouseDown();
+				})
+
+				EventsControls.attachEvent( 'mouseOut', function () {
+					//console.log("out");
+					hit = false;
+					//oreo.scale.set( 0.8, 0.8, 0.8 );
+					this.container.style.cursor = 'auto';
+					
+				this.container.removeEventListener( 'mousemove', onDocumentMouseMove, false );
+				this.container.removeEventListener( 'mouseup', onDocumentMouseUp, false );
+				this.container.removeEventListener( 'mouseout', onDocumentMouseOut, false );
+
+				});
+
+			EventsControls.attachEvent( 'mouseup', function () {
+				console.log("up");
+				hit = false; down = false;
+				this.container.style.cursor = 'auto';
+					
+				document.removeEventListener( 'mousemove', onDocumentMouseMove, false );
+				document.removeEventListener( 'mouseup', onDocumentMouseUp, false );
+				document.removeEventListener( 'mouseout', onDocumentMouseOut, false );
+
+				});
+
+			function onDocumentMouseDown( event ) {
+				
+				mouseXOnMouseDown = event.clientX - windowHalfX;
+				mouseYOnMouseDown = event.clientY - windowHalfY;
+				
+				targetRotationOnMouseDownX = targetRotationX;
+				targetRotationOnMouseDownY = targetRotationY;
+				
+				targetPositionXOnMouseDown = targetPositionX;
+				targetPositionYOnMouseDown = targetPositionY;
+				
+				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+			}
+
+			function onDocumentMouseMove( event ) {
+				//console.log("move");
+				if (hit == true && down == true) {
+				mouseX = event.clientX - windowHalfX;
+				mouseY = event.clientY - windowHalfY;
+
+				targetRotationX = targetRotationOnMouseDownX + ( mouseX - mouseXOnMouseDown ) * 0.002;
+				targetRotationY = targetRotationOnMouseDownY + ( mouseY - mouseXOnMouseDown ) * 0.009;
+
+				targetPositionX = targetPositionXOnMouseDown + ( mouseX - mouseXOnMouseDown ) * 0.02;
+				targetPositionY = targetPositionYOnMouseDown + ( mouseY - mouseYOnMouseDown ) * -0.04;
+
+				speedx += ( targetPositionX - oreo.position.x ) * 0.03;
+				speedy += ( targetPositionY - oreo.position.y ) * 0.01;
+
+				roty += ( targetRotationY - oreo.rotation.x ) * 0.05;
+				//rotx += ( targetRotationX - oreo.rotation.y ) * 0.2;
+				
+				}
+				//console.log(targetPosition)
+
+			}
+
+			function onDocumentMouseUp( event ) {
+				console.log("up");
+				hit = false; down = false;
+				document.removeEventListener( 'mousemove', onDocumentMouseMove, false );
+				document.removeEventListener( 'mouseup', onDocumentMouseUp, false );
+				document.removeEventListener( 'mouseout', onDocumentMouseOut, false );
+
+			}
+
+			function onDocumentMouseOut( event ) {
+
+				
+
+			}
+
+			function onDocumentTouchStart( event ) {
+
+				if ( event.touches.length === 1 ) {
+
+					event.preventDefault();
+
+					mouseXOnMouseDown = event.touches[ 0 ].pageX - windowHalfX;
+					mouseYOnMouseDown = event.touches[ 0 ].pageY - windowHalfY;
+					// targetRotationOnMouseDownX = targetRotationX;
+					// targetRotationOnMouseDownY = targetRotationY;
+					targetPositionXOnMouseDown = targetPositionX;
+					targetPositionYOnMouseDown = targetPositionY;
+
+				}
+
+			}
+
+			function onDocumentTouchMove( event ) {
+
+				if ( event.touches.length === 1 ) {
+
+					event.preventDefault();
+
+					mouseX = event.touches[ 0 ].pageX - windowHalfX;
+					mouseY = event.touches[ 0 ].pageY - windowHalfY;
+					// targetRotationX = targetRotationOnMouseDownX + ( mouseX - mouseXOnMouseDown ) * 0.009;
+					// targetRotationY = targetRotationOnMouseDownY + ( mouseY - mouseYOnMouseDown ) * 0.009;
+					targetPositionX = targetPositionXOnMouseDown + ( mouseX - mouseXOnMouseDown ) * 0.05;
+					targetPositionY = targetPositionYOnMouseDown + ( mouseY - mouseYOnMouseDown ) * -2;
+					speedx += ( targetPositionX - oreo.position.x ) * 0.03;
+					speedy += ( targetPositionY - oreo.position.y ) * 0.02;
+				}
+
+			}
+
+
+			}
+
+			function move(){
+				oreo.position.x += speedx;
+				oreo.position.y += speedy;
+
+				speedx *= 0.94; speedy *=0.94;
+				rotx *= 0.9; roty *=0.9;
+				
+				// oreo.rotation.x += roty;
+				// oreo.rotation.y += rotx;
+			}
+
+			function checkTilt(){
+			
+				if (deviceOrientation) {
+
+				    var quaternion = deviceOrientation.getScreenAdjustedQuaternion();
+				    var matrix = deviceOrientation.getScreenAdjustedMatrix();
+				    var euler = deviceOrientation.getScreenAdjustedEuler();
+				    var acc = deviceMotion.getScreenAdjustedAcceleration();
+		       		var accGrav = deviceMotion.getScreenAdjustedAccelerationIncludingGravity();
+       				info.innerHTML = 'Speed: ' + toDec(speedx) + ", " + toDec(speedy) + ".<br> Rot: " + toDec(degrees(oreo.rotation.z)) + ' quaternion.x: ' + toDec(quaternion.x) + ' euler.gamma: ' + toDec(euler.gamma);
+
+				    //targetPositionX = tween(targetPositionX, 500*quaternion.x , 10);
+				    //targetPositionY = tween(targetPositionY, 500*quaternion.y, 10);
+				    rotx = tween(rotx, radians(2*euler.gamma), 25);
+				    roty = tween(roty, radians(90+2*euler.beta), 25);
+			}
+		}
+
+
+			function animate() {
+
+					requestAnimationFrame(animate);
+					render();
+
+			}
+
+
+			function render() {
+
+					stats.update();
+					EventsControls.update(); // real-time update
+					checkTilt();
+					move();
+					renderer.render(scene, camera);
+
+			}
+
+		</script>
+
+	</body>
+</html>

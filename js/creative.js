@@ -179,6 +179,11 @@ function chance(value){
 	if (random(value) > value-1) return true;
 }
 
+
+function toDec(num){
+	return Math.round((num * 100) / 100);
+}
+
 var mouseX = 0, 
 	mouseY = 0, 
 	lastMouseX = 0, 
