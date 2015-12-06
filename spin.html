@@ -347,9 +347,9 @@
        		var accGrav = deviceMotion.getScreenAdjustedAccelerationIncludingGravity();
        		info.innerHTML = 'Speed: ' + speedx + ", " + speedy + ". Rot: " + degrees(toDec(oreo.rotation.z)) + ' quaternion.x: ' + toDec(quaternion.x) + ' euler.gamma: ' + toDec(euler.gamma);
 
-		    targetPositionX = tween(targetPositionX, 10*quaternion.x , 10);
-		    targetPositionY = tween(targetPositionY, 10*quaternion.y, 10);
-		    targetRotation = tween(targetRotation, radians(euler.gamma), 10);
+		    targetPositionX = tween(targetPositionX, 100*quaternion.x , 10);
+		    targetPositionY = tween(targetPositionY, 100*quaternion.y, 10);
+		    targetRotation = tween(targetRotation, radians(5*euler.gamma), 10);
 			}
 		}
 
