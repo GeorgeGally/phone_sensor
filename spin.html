@@ -38,7 +38,7 @@
 			var camera, scene, renderer;
 
 			var cube, plane, oreo;
-			var speedx, speedy = 0;
+			var speedx = 0; speedy = 0;
 			var info;
 			var targetRotationX = targetRotationY = 0;
 			var targetRotationOnMouseDownX = targetRotationOnMouseDownY = 0;
@@ -167,7 +167,8 @@
 				oreo.scale.set( 30, 30, 30 );
 				oreo.rotateX( - Math.PI / 2 );
 				scene.add( oreo );
-
+				// oreo.position.x = window.innerWidth / 2;
+				// oreo.position.y = window.innerHeight / 2;
 				// var loader = new THREE.STLLoader();
 
 				// loader.load( './models/Oreo2.stl', function ( geometry ) {
@@ -257,6 +258,8 @@
 
 				targetPositionX = targetPositionXOnMouseDown + ( mouseX - mouseXOnMouseDown ) * 0.8;
 
+				speedx += ( targetPositionX - oreo.position.x ) * 0.03;
+				speedy += ( targetPositionY - oreo.position.y ) * 0.01;
 				//console.log(targetPosition)
 
 			}
@@ -306,7 +309,8 @@
 					// targetRotationY = targetRotationOnMouseDownY + ( mouseY - mouseYOnMouseDown ) * 0.009;
 					targetPositionX = targetPositionXOnMouseDown + ( mouseX - mouseXOnMouseDown ) * 0.05;
 					targetPositionY = targetPositionYOnMouseDown + ( mouseY - mouseYOnMouseDown ) * -2;
-
+					speedx += ( targetPositionX - oreo.position.x ) * 0.03;
+					speedy += ( targetPositionY - oreo.position.y ) * 0.02;
 				}
 
 			}
@@ -325,13 +329,16 @@
 			function render() {
 				checkTilt();
 				
-				speedx = toDec((targetPositionX - oreo.position.x)) / 100;
-				speedy = toDec((targetPositionY - oreo.position.y)) / 100;
-				
-				oreo.position.x += ( targetPositionX - oreo.position.x ) * 0.5;
-				oreo.position.y += ( targetPositionY - oreo.position.y ) * 0.5;
-				oreo.rotation.z += ( targetRotationX - oreo.rotation.z ) * 0.5;
-				oreo.rotation.x += ( targetRotationY - oreo.rotation.x ) * 0.5;
+				//console.log(speedx);
+				oreo.position.x += speedx;
+				oreo.position.y += speedy;
+
+				speedx *= 0.94; speedy *=0.94;
+
+				// oreo.position.x += ( targetPositionX - oreo.position.x ) * 0.5;
+				// oreo.position.y += ( targetPositionY - oreo.position.y ) * 0.5;
+				//oreo.rotation.z += ( targetRotationX - oreo.rotation.z ) * 0.5;
+				//oreo.rotation.x += ( targetRotationY - oreo.rotation.x ) * 0.5;
 
 				renderer.render( scene, camera );
 
