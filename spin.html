@@ -343,8 +343,11 @@
 		    var quaternion = deviceOrientation.getScreenAdjustedQuaternion();
 		    var matrix = deviceOrientation.getScreenAdjustedMatrix();
 		    var euler = deviceOrientation.getScreenAdjustedEuler();
-		    targetPositionX = tween(targetPositionX, quaternion.x, 10);
-		    targetPositionY = tween(targetPositionY, quaternion.y, 10);
+		    var acc = deviceMotion.getScreenAdjustedAcceleration();
+       		var accGrav = deviceMotion.getScreenAdjustedAccelerationIncludingGravity();
+		    targetPositionX = tween(targetPositionX, accGrav.x , 10);
+		    targetPositionY = tween(targetPositionY, accGrav.y, 10);
+		    targetRotation = tween(targetRotation, euler.gamma, 10);
 			}
 		}
 		</script>
