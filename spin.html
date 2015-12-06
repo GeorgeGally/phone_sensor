@@ -137,58 +137,29 @@
 				light2.shadowMapHeight = 1048;
 
 
-				// Cube
-
-				// var geometry = new THREE.BoxGeometry( 200, 200, 200 );
-
-				// for ( var i = 0; i < geometry.faces.length; i += 2 ) {
-
-				// 	var hex = Math.random() * 0xffffff;
-				// 	geometry.faces[ i ].color.setHex( hex );
-				// 	geometry.faces[ i + 1 ].color.setHex( hex );
-
-				// }
-
-				// var material = new THREE.MeshBasicMaterial( { vertexColors: THREE.FaceColors, overdraw: 0.5 } );
-
-				// cube = new THREE.Mesh( geometry, material );
-				// cube.position.y = 150;
-				// scene.add( cube );
-
-				// Plane
-
-				// var geometry = new THREE.PlaneBufferGeometry( 200, 200 );
 				
-				// var material = new THREE.MeshBasicMaterial( { color: 0xe0e0e0, overdraw: 0.5 } );
-
-				//plane = new THREE.Mesh( geometry, material );
-				//plane.rotateX( - Math.PI / 2 );
-				//plane.position.z = -250;
-
-				//scene.add( plane );
 
 				oreo = new THREE.Object3D();//create an empty container
 
 				var geometry = new THREE.CylinderGeometry( 5, 5, 0.5, 32 );
 				var material = new THREE.MeshBasicMaterial( {color: 0x330000} );
 				var oreo1 = new THREE.Mesh( geometry, material );
-				oreo1.scale.set( 20, 20, 20 );
-				oreo1.rotateX( - Math.PI / 2 );
-				oreo1.position.set(0,0, 10 );
+				
+				oreo1.position.set(0, 0.5, 0 );
 
 				var oreo2 = new THREE.Mesh( geometry, material );
-				oreo2.scale.set( 20, 20, 20 );
-				oreo2.rotateX( - Math.PI / 2 );
-				oreo2.position.set(0,0, -10 );
+				
+				oreo2.position.set(0, -0.5, 0 );
 
 				var geometry = new THREE.CylinderGeometry( 4, 4, 0.5, 32 );
 				var material = new THREE.MeshBasicMaterial( {color: 0xffffff});
 				var cream = new THREE.Mesh( geometry, material );
-				cream.scale.set( 20, 20, 20 );
-				cream.rotateX( - Math.PI / 2 );
+				
 				oreo.add( oreo1 );
 				oreo.add( cream );
 				oreo.add( oreo2 );
+				oreo.scale.set( 20, 20, 20 );
+				oreo.rotateX( - Math.PI / 2 );
 				scene.add( oreo );
 
 				// var loader = new THREE.STLLoader();
@@ -351,7 +322,7 @@
 				
 				oreo.position.x += ( targetPositionX - oreo.position.x ) * 0.5;
 				oreo.position.y += ( targetPositionY - oreo.position.y ) * 0.5;
-				oreo.rotation.y += ( targetRotation - oreo.rotation.y ) * 0.5;
+				oreo.rotation.z += ( targetRotation - oreo.rotation.z ) * 0.5;
 				
 
 				renderer.render( scene, camera );
@@ -372,8 +343,8 @@
        		var accGrav = deviceMotion.getScreenAdjustedAccelerationIncludingGravity();
        		info.innerHTML = 'Speed: ' + speedx + ", " + speedy + ".<br> Rot: " + toDec(degrees(oreo.rotation.z)) + ' quaternion.x: ' + toDec(quaternion.x) + ' euler.gamma: ' + toDec(euler.gamma);
 
-		    targetPositionX = tween(targetPositionX, 500*quaternion.x , 10);
-		    targetPositionY = tween(targetPositionY, 500*quaternion.y, 10);
+		    //targetPositionX = tween(targetPositionX, 500*quaternion.x , 10);
+		    //targetPositionY = tween(targetPositionY, 500*quaternion.y, 10);
 		    targetRotation = tween(targetRotation, radians(5*euler.gamma), 5);
 			}
 		}
