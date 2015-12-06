@@ -232,39 +232,23 @@
 
 			this.container.style.cursor = 'pointer';
 			//this.mouseOvered.material = selMaterial;
-			console.log( 'the key at number ' + this.event.item + ' is select' );
+			//console.log( 'the key at number ' + this.event.item + ' is select' );
 
 		});
 
-		function setFromCamera(raycaster, coords, origin){
-			
-    		raycaster.ray.origin.copy( camera.position );
-    		//console.log(raycaster)
-    		raycaster.ray.direction.set( coords.x, coords.y, 0.5 ).unproject( camera ).sub( camera.position).normalize();
-		}
 
 		
 		function onDocumentMouseDown( event ) {
 
-			// raycaster = new THREE.Raycaster();
-   // 			mouse = new THREE.Vector2();
-   // 			mouse.x = ( event.clientX / renderer.domElement.width ) * 2 - 1;
-   //  		mouse.y = - ( event.clientY / renderer.domElement.height ) * 2 + 1;
-
-   			//setFromCamera(raycaster, mouse, camera );
-    
-    		//var intersects = raycaster.intersectObjects(scene.children, true);
-    		//console.log(scene.children);
 				event.preventDefault();
 
 				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 				document.addEventListener( 'mouseup', onDocumentMouseUp, false );
 				document.addEventListener( 'mouseout', onDocumentMouseOut, false );
 
-			//if ( intersects.length > 0 ) {
 				mouseXOnMouseDown = event.clientX - windowHalfX;
 				mouseYOnMouseDown = event.clientY - windowHalfY;
-			//}
+			
 				targetRotationOnMouseDownX = targetRotationX;
 				targetRotationOnMouseDownY = targetRotationY;
 				targetPositionXOnMouseDown = targetPositionX;
@@ -275,18 +259,7 @@
 	
 	function onDocumentMouseMove( event ) {
 
-				raycaster = new THREE.Raycaster();
-    			mouse = new THREE.Vector2();
-    			
-    			mouse.x = ( event.clientX / renderer.domElement.width ) * 2 - 1;
-    			mouse.y = - ( event.clientY / renderer.domElement.height ) * 2 + 1;
-				setFromCamera(raycaster, mouse, camera );
-
-				var intersects = raycaster.intersectObjects(scene.children, true);
-
-    			//var intersects = raycaster.intersectObjects( scene.children );
-    			console.log(intersects);
-    			if ( intersects.length > 0 ) {
+				
 					mouseX = event.clientX - windowHalfX;
 					mouseY = event.clientY - windowHalfY;
 
@@ -300,7 +273,7 @@
 				speedx += ( targetPositionX - oreo.position.x ) * 0.03;
 				speedy += ( targetPositionY - oreo.position.y ) * 0.01;
 				//console.log("hit");
-				}
+			
 				//console.log(targetPosition)
 
 			}
