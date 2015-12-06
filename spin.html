@@ -93,7 +93,7 @@
 			  );
 
 			init();
-			
+			animate();
 
 			function init() {
 
@@ -167,27 +167,51 @@
 
 				//scene.add( plane );
 
-				var loader = new THREE.STLLoader();
+				oreo = new THREE.Object3D();//create an empty container
 
-				loader.load( './models/Oreo2.stl', function ( geometry ) {
+				var geometry = new THREE.CylinderGeometry( 5, 5, 0.5, 32 );
+				var material = new THREE.MeshBasicMaterial( {color: 0x330000} );
+				var oreo1 = new THREE.Mesh( geometry, material );
+				oreo1.scale.set( 20, 20, 20 );
+				oreo1.rotateX( - Math.PI / 2 );
+				oreo1.position.set(0,0, 10 );
 
-					var material = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0xaaaaaa, shininess: 400 } );
+				var oreo2 = new THREE.Mesh( geometry, material );
+				oreo2.scale.set( 20, 20, 20 );
+				oreo2.rotateX( - Math.PI / 2 );
+				oreo2.position.set(0,0, -10 );
+
+				var geometry = new THREE.CylinderGeometry( 4, 4, 0.5, 32 );
+				var material = new THREE.MeshBasicMaterial( {color: 0xffffff});
+				var cream = new THREE.Mesh( geometry, material );
+				cream.scale.set( 20, 20, 20 );
+				cream.rotateX( - Math.PI / 2 );
+				oreo.add( oreo1 );
+				oreo.add( cream );
+				oreo.add( oreo2 );
+				scene.add( oreo );
+
+				// var loader = new THREE.STLLoader();
+
+				// loader.load( './models/Oreo2.stl', function ( geometry ) {
+
+				// 	var material = new THREE.MeshPhongMaterial( { color: 0xffffff, specular: 0xaaaaaa, shininess: 400 } );
 					
-					oreo = new THREE.Mesh( geometry, material );
+				// 	oreo = new THREE.Mesh( geometry, material );
 
-					oreo.position.set( 0, 0, 0 );
-					oreo.rotation.set( - Math.PI / 2, 0, 0 );
-					oreo.scale.set( 120, 120, 120 );
+				// 	oreo.position.set( 0, 0, 0 );
+				// 	oreo.rotation.set( - Math.PI / 2, 0, 0 );
+				// 	oreo.scale.set( 120, 120, 120 );
 
-					oreo.castShadow = true;
-					oreo.receiveShadow = true;
+				// 	oreo.castShadow = true;
+				// 	oreo.receiveShadow = true;
 
-					scene.add( oreo );
-					animate();
-				} );
+				//scene.add( oreo );
+				// animate();
+				// } );
 
 				
-
+				
 
 				renderer = new THREE.CanvasRenderer();
 				renderer.setClearColor( 0xf0f0f0 );
@@ -211,6 +235,7 @@
 				window.addEventListener( 'resize', onWindowResize, false );
 
 			}
+
 
 			function onWindowResize() {
 
@@ -326,7 +351,7 @@
 				
 				oreo.position.x += ( targetPositionX - oreo.position.x ) * 0.5;
 				oreo.position.y += ( targetPositionY - oreo.position.y ) * 0.5;
-				oreo.rotation.z += ( targetRotation - oreo.rotation.z ) * 0.5;
+				oreo.rotation.y += ( targetRotation - oreo.rotation.y ) * 0.5;
 				
 
 				renderer.render( scene, camera );
@@ -345,16 +370,16 @@
 		    var euler = deviceOrientation.getScreenAdjustedEuler();
 		    var acc = deviceMotion.getScreenAdjustedAcceleration();
        		var accGrav = deviceMotion.getScreenAdjustedAccelerationIncludingGravity();
-       		info.innerHTML = 'Speed: ' + speedx + ", " + speedy + ". Rot: " + degrees(toDec(oreo.rotation.z)) + ' quaternion.x: ' + toDec(quaternion.x) + ' euler.gamma: ' + toDec(euler.gamma);
+       		info.innerHTML = 'Speed: ' + speedx + ", " + speedy + ".<br> Rot: " + toDec(degrees(oreo.rotation.z)) + ' quaternion.x: ' + toDec(quaternion.x) + ' euler.gamma: ' + toDec(euler.gamma);
 
-		    targetPositionX = tween(targetPositionX, 500*quaternion.x , 4);
-		    targetPositionY = tween(targetPositionY, 500*quaternion.y, 4);
-		    targetRotation = tween(targetRotation, radians(5*euler.gamma), 2);
+		    targetPositionX = tween(targetPositionX, 500*quaternion.x , 10);
+		    targetPositionY = tween(targetPositionY, 500*quaternion.y, 10);
+		    targetRotation = tween(targetRotation, radians(5*euler.gamma), 5);
 			}
 		}
 
 		function toDec(num){
-			return Math.round(num * 100) / 100;
+			return Math.round((num * 100) / 100);
 		}
 
 		</script>
