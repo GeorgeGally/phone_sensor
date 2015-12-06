@@ -20,8 +20,7 @@
 
 		<script src="js/renderers/Projector.js"></script>
 		
-		<script src="js/renderers/WebGlRenderer.js"></script>
-		<script src="js/loaders/STLLoader.js"></script>
+
 		<script src="js/Detector.js"></script>
 		
 		<script src="bower_components/fulltilt/dist/fulltilt.min.js"></script>
@@ -118,26 +117,26 @@
 
 				// LIGHTS
 
-				light1 = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 );
-				light1.color.setHSL( 0.6, 1, 0.6 );
-				light1.groundColor.setHSL( 0.095, 1, 0.75 );
-				light1.position.set( 10, 500, 100 );
-				scene.add( light1 );
+				// light1 = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 );
+				// light1.color.setHSL( 0.6, 1, 0.6 );
+				// light1.groundColor.setHSL( 0.095, 1, 0.75 );
+				// light1.position.set( 10, 500, 100 );
+				// scene.add( light1 );
 
 				//
 
 				light2 = new THREE.DirectionalLight( 0xffffff, 1 );
 				light2.color.setHSL( 0.1, 1, 0.95 );
 				light2.position.set( -10, 1.75, 1 );
-				light2.position.multiplyScalar( 50 );
+				light2.position.multiplyScalar( 20 );
 				scene.add( light2 );
 
-				light2.castShadow = true;
+				// light2.castShadow = true;
 
-				light2.shadowMapWidth = 1048;
-				light2.shadowMapHeight = 1048;
+				// light2.shadowMapWidth = 1048;
+				// light2.shadowMapHeight = 1048;
 
-				var ambientLight = new THREE.AmbientLight(0xffffff);
+				var ambientLight = new THREE.AmbientLight(0x111111);
         		scene.add(ambientLight); 
 
 				
@@ -145,7 +144,7 @@
 				oreo = new THREE.Object3D();//create an empty container
 
 				var geometry = new THREE.CylinderGeometry( 5, 5, 0.5, 42 );
-				var material = new THREE.MeshBasicMaterial( {color: 0x330000} );
+				var material = new THREE.MeshPhongMaterial( {color: 0x330000} );
 				var oreo1 = new THREE.Mesh( geometry, material );
 				
 				oreo1.position.set(0, 0.5, 0 );
