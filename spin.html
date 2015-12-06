@@ -321,8 +321,8 @@
 				// oreo.rotation.y = cube.rotation.y += ( targetRotation - cube.rotation.y ) * 0.05;
 				// oreo.position.y = cube.position.y += ( targetPosition - cube.position.y ) * 0.05;
 				//oreo.rotation.z += 12;
-				speedx = Math.round((targetPositionX - oreo.position.x) * 100) / 100;
-				speedy = Math.round((targetPositionY - oreo.position.y) * 100) / 100;
+				speedx = toDec((targetPositionX - oreo.position.x)) / 100;
+				speedy = toDec((targetPositionY - oreo.position.y)) / 100;
 				
 				oreo.position.x += ( targetPositionX - oreo.position.x ) * 0.5;
 				oreo.position.y += ( targetPositionY - oreo.position.y ) * 0.5;
@@ -345,13 +345,18 @@
 		    var euler = deviceOrientation.getScreenAdjustedEuler();
 		    var acc = deviceMotion.getScreenAdjustedAcceleration();
        		var accGrav = deviceMotion.getScreenAdjustedAccelerationIncludingGravity();
-       		info.innerHTML = 'Speed: ' + speedx + ", " + speedy + ". Rot: " + degrees( Math.round(oreo.rotation.z * 100) / 100) + 'accGrav.x: ' + accGrav.x;
+       		info.innerHTML = 'Speed: ' + speedx + ", " + speedy + ". Rot: " + degrees(toDec(oreo.rotation.z)) + ' quaternion.x: ' + toDec(quaternion.x) + ' euler.gamma: ' + toDec(euler.gamma);
 
-		    targetPositionX = tween(targetPositionX, 10*accGrav.x , 10);
-		    targetPositionY = tween(targetPositionY, 10*accGrav.y, 10);
+		    targetPositionX = tween(targetPositionX, 10*quaternion.x , 10);
+		    targetPositionY = tween(targetPositionY, 10*quaternion.y, 10);
 		    targetRotation = tween(targetRotation, radians(euler.gamma), 10);
 			}
 		}
+
+		function toDec(num){
+			return Math.round(num * 100) / 100);
+		}
+
 		</script>
 
 	</body>
