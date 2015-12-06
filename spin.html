@@ -137,6 +137,8 @@
 				light2.shadowMapWidth = 1048;
 				light2.shadowMapHeight = 1048;
 
+				var ambientLight = new THREE.AmbientLight(0xffffff);
+        		scene.add(ambientLight); 
 
 				
 
@@ -156,6 +158,10 @@
 				var material = new THREE.MeshBasicMaterial( {color: 0xffffff});
 				var cream = new THREE.Mesh( geometry, material );
 				
+				oreo1.castShadow = true;
+				oreo1.receiveShadow = true;
+				oreo2.castShadow = true;
+				oreo2.receiveShadow = true;
 				oreo.add( oreo1 );
 				oreo.add( cream );
 				oreo.add( oreo2 );
@@ -282,8 +288,8 @@
 					mouseYOnMouseDown = event.touches[ 0 ].pageY - windowHalfY;
 					targetRotationOnMouseDownX = targetRotationX;
 					targetRotationOnMouseDownY = targetRotationY;
-					targetPositionXOnMouseDown = targetPositionX;
-					targetPositionYOnMouseDown = targetPositionY;
+					//targetPositionXOnMouseDown = targetPositionX;
+					//targetPositionYOnMouseDown = targetPositionY;
 
 				}
 
@@ -299,8 +305,8 @@
 					mouseY = event.touches[ 0 ].pageY - windowHalfY;
 					targetRotationX = targetRotationOnMouseDownX + ( mouseX - mouseXOnMouseDown ) * 0.009;
 					targetRotationY = targetRotationOnMouseDownY + ( mouseY - mouseYOnMouseDown ) * 0.009;
-					targetPositionX = targetPositionXOnMouseDown + ( mouseX - mouseXOnMouseDown ) * 0.05;
-					targetPositionY = targetPositionYOnMouseDown + ( mouseY - mouseYOnMouseDown ) * -2;
+					//targetPositionX = targetPositionXOnMouseDown + ( mouseX - mouseXOnMouseDown ) * 0.05;
+					//targetPositionY = targetPositionYOnMouseDown + ( mouseY - mouseYOnMouseDown ) * -2;
 
 				}
 
