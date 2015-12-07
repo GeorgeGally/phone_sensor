@@ -38,7 +38,8 @@
 			var camera, scene, renderer;
 
 			var cube, plane, oreo;
-			var speedx = 0; speedy = 0;
+			var speedx = 0; var speedy = 0;
+			var rotationx = 0; var rotationy = 0;
 			var info;
 
 			var targetRotationX = targetRotationY = 0;
@@ -121,7 +122,7 @@
 				addLights();
 
 				renderer = new THREE.WebGLRenderer( { antialias: false } );
-			renderer.setClearColor( 0xe7e7e7 );
+			renderer.setClearColor( 0x43C7F4 );
 			renderer.setPixelRatio( window.devicePixelRatio );
 			renderer.setSize( window.innerWidth, window.innerHeight );
 			container.appendChild( renderer.domElement );
@@ -153,7 +154,7 @@
 			var material = new THREE.MeshBasicMaterial( {color: 0xffffff});
 			var cream = new THREE.Mesh( geometry, material );
 				
-			geometry1 = new THREE.PlaneBufferGeometry(11,11);
+			geometry1 = new THREE.PlaneBufferGeometry(10,10);
 			material1 = new THREE.MeshBasicMaterial({ 
     		map: map, transparent: true, 
     			//doubleSided: false
@@ -180,7 +181,7 @@
 			oreo.add( oreo1 );
 			oreo.add( cream );
 			oreo.add( oreo2 );
-			oreo.scale.set( 0.3, 0.3, 0.3 );
+			oreo.scale.set( 0.25, 0.25, 0.25 );
 			oreo.rotateX( - Math.PI / 2 );
 			scene.add( oreo );
 			
@@ -263,11 +264,10 @@
 					mouseX = event.clientX - windowHalfX;
 					mouseY = event.clientY - windowHalfY;
 
-				// targetRotationX = targetRotationOnMouseDownX + ( mouseX - mouseXOnMouseDown ) * 0.009;
-				// targetRotationY = targetRotationOnMouseDownY + ( mouseY - mouseXOnMouseDown ) * 0.009;
+				targetRotationX = targetRotationOnMouseDownX + ( mouseX - mouseXOnMouseDown ) * 0.009;
+				targetRotationY = targetRotationOnMouseDownY + ( mouseY - mouseXOnMouseDown ) * 0.009;
 
 				targetPositionY = targetPositionYOnMouseDown + ( mouseY - mouseYOnMouseDown ) * -0.2;
-
 				targetPositionX = targetPositionXOnMouseDown + ( mouseX - mouseXOnMouseDown ) * 0.08;
 
 				speedx += ( targetPositionX - oreo.position.x ) * 0.03;
@@ -346,10 +346,14 @@
 				EventsControls.update(); // real-time update
 
 				//console.log(speedx);
-				oreo.position.x += speedx;
-				oreo.position.y += speedy;
+				// oreo.position.x += speedx;
+				// oreo.position.y += speedy;
+
+				oreo.rotation.z += rotationx;
+				oreo.rotation.x += 0.3 + rotationy;
 
 				speedx *= 0.94; speedy *=0.94;
+				rotationx *= 0.94; rotationy *=0.94;
 
 				// oreo.position.x += ( targetPositionX - oreo.position.x ) * 0.5;
 				// oreo.position.y += ( targetPositionY - oreo.position.y ) * 0.5;
