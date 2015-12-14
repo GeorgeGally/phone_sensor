@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js canvas - geometry - cube</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			body {
+				font-family: Monospace;
+				background-color: #43C7F4;
+				margin: 0px;
+				overflow: hidden;
+			}
+			#score { color: #fff;
+				font-size: 22px; font-family: helvetica, arial, sans;
+				position: absolute; top: 20px; right: 20px; z-index: 99;
+			}
+		</style>
+	</head>
+	<body>
+<div id="score"></div>
+<canvas id="c"></canvas>
+		<script src="js/creative.js"></script>
+		
+		
+		<script src="bower_components/fulltilt/dist/fulltilt.min.js"></script>
+    	<script src="bower_components/es6-promise/promise.min.js"></script>
+    	<script src="bower_components/jquery/dist/jquery.min.js"></script>
+
+		<script src="js/libs/stats.min.js"></script>
+
+		<script>
+
+			var score = 0;
+			ctx = setUpCanvas('c');
+			var glass_img = new Image();
+			glass_img.src = 'img/glass.png';
+			var outer_glass_img = new Image();
+			outer_glass_img.src = 'img/outer_glass.png';
+			var oreo_img = new Image();
+			oreo_img.src = 'img/oreo_illus.png';
+
+			// Create a new FULLTILT Promise for e.g. *compass*-based deviceorientation data
+			var promise = new FULLTILT.getDeviceOrientation({ 'type': 'world' });
+
+			// FULLTILT.DeviceOrientation instance placeholder
+			var deviceOrientation;
+			var deviceMotion;
+
+			promise
+			    .then(function(controller) {
+			      // Store the returned FULLTILT.DeviceOrientation object
+			      deviceOrientation = controller;
+			    })
+			    .catch(function(message) {
+			      console.error(message);
+
+			      // Optionally set up fallback controls...
+			      // initManualControls();
+			    });
+
+			    var promise_motion = FULLTILT.getDeviceMotion();
+
+			promise_motion
+			  .then(function(controller) {
+			      deviceMotion = controller;
+			      // Use `deviceMotion` object to interact with device motion sensors
+			    }
+			  ).catch(
+			
+			function(message) {
+			      // Device Motion Events are not supported
+
+			      // Implement manual fallback controls instead...
+			    }
+			  );
+
+		
+
+
+		function draw(){
+			//ctx.fillStyle = rgba(0,0,0,0.02);
+			ctx.clearRect(0,0,ctx.w, ctx.h);
+  			drawGlass(glass_img);
+			moveBall();
+			hittest();
+			radar();
+			drawGlass(outer_glass_img);
+		}
+
+		function drawGlass(img){
+			ctx.drawImage(img,mouseX-40, ctx.h-200, cup.w, cup.h);
+		}
+
+		var ball = {
+			x: ctx.w/2,
+			y: 0,
+			speedx: random(-2,2),
+			speedy: 2,
+			size: 80, 
+			colour: 'red'
+		}
+		
+		var cup = {
+			w: 120,
+			h: 200,
+
+		}
+
+		function hittest(){
+			if (ball.x > mouseX-40-ball.size/2 && ball.x  < mouseX + ball.size/2 +40) {
+				//console.log("hit");
+				ball.colour = "blue";
+					if (ball.y > ctx.h-200-ball.size/2 && ball.y  < ctx.h-20+ 40) {
+						ball.colour = "yellow";
+						if (ball.y > ctx.h-150) {
+								resetBall();
+								addScore(1)
+							}
+					}
+			} else {
+				ball.colour = "red";
+			}
+		}
+
+		rad = {
+			w: 100, h: 100, offset: 80
+		}
+
+		function radar(){
+			
+			ctx.fillStyle = "white";
+			ctx.fillEllipse(rad.offset, rad.offset, rad.w, rad.h);
+			//glass
+			var ptx = mouseX/ctx.w*rad.w-rad.w/2;
+			var pty = mouseY/ctx.h*rad.h-rad.h/2;
+			ctx.fillStyle = "#43C7F4";
+			ctx.fillEllipse(rad.offset+ptx, rad.offset+pty, 20, 20);
+			//ball
+			var bx = ball.x/ctx.w*rad.w-rad.w/2;
+			var by = ball.y/ctx.h*rad.h-rad.h/2;
+			ctx.fillStyle = "red";
+			ctx.fillEllipse(rad.offset+bx, rad.offset+by, 5, 5);
+
+			ball.size = 10+ 2 * pty;
+		}
+
+		function addScore(ammt){
+			score += ammt;
+			$('#score').html("Score: " + score);
+		}
+
+		function moveBall(){
+			ball.x += ball.speedx;
+			ball.y += ball.speedy;
+			if (ball.y > ctx.h) {
+				resetBall();
+				addScore(-1);
+			}
+			// ctx.fillStyle = ball.colour;
+			// ctx.fillEllipse(ball.x, ball.y, ball.size,ball.size);
+			ctx.drawImage(oreo_img,ball.x, ball.y, ball.size,ball.size);
+		}
+
+		function resetBall(){
+			ball.x = ctx.w/2;
+			ball.y = 0;
+			ball.speedx = random(-2,2),
+			ball.speedy = 4,
+			ball.size = 80, 
+			ball.colour=  'red';
+		}
+
+		function onDocumentMouseDown( event ) {
+
+				event.preventDefault();
+
+				document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+				document.addEventListener( 'mouseup', onDocumentMouseUp, false );
+				document.addEventListener( 'mouseout', onDocumentMouseOut, false );
+
+				mouseXOnMouseDown = event.clientX - windowHalfX;
+				mouseYOnMouseDown = event.clientY - windowHalfY;
+			
+				targetRotationOnMouseDownX = targetRotationX;
+				targetRotationOnMouseDownY = targetRotationY;
+				targetPositionXOnMouseDown = targetPositionX;
+				targetPositionYOnMouseDown = targetPositionY;
+
+			}
+
+	
+	function onDocumentMouseMove( event ) {
+
+		mouseX = event.clientX - windowHalfX;
+		mouseY = event.clientY - windowHalfY;
+
+				targetRotationX = targetRotationOnMouseDownX + ( mouseX - mouseXOnMouseDown ) * 0.009;
+				targetRotationY = targetRotationOnMouseDownY + ( mouseY - mouseXOnMouseDown ) * 0.009;
+
+				targetPositionY = targetPositionYOnMouseDown + ( mouseY - mouseYOnMouseDown ) * -0.2;
+				targetPositionX = targetPositionXOnMouseDown + ( mouseX - mouseXOnMouseDown ) * 0.08;
+
+				speedx += ( targetPositionX - oreo.position.x ) * 0.03;
+				speedy += ( targetPositionY - oreo.position.y ) * 0.01;
+				//console.log("hit");
+			
+				//console.log(targetPosition)
+
+			}
+
+			function onDocumentMouseUp( event ) {
+
+				document.removeEventListener( 'mousemove', onDocumentMouseMove, false );
+				document.removeEventListener( 'mouseup', onDocumentMouseUp, false );
+				document.removeEventListener( 'mouseout', onDocumentMouseOut, false );
+
+			}
+
+			function onDocumentMouseOut( event ) {
+
+				document.removeEventListener( 'mousemove', onDocumentMouseMove, false );
+				document.removeEventListener( 'mouseup', onDocumentMouseUp, false );
+				document.removeEventListener( 'mouseout', onDocumentMouseOut, false );
+
+			}
+
+			function onDocumentTouchStart( event ) {
+
+				if ( event.touches.length === 1 ) {
+
+					event.preventDefault();
+
+					mouseXOnMouseDown = event.touches[ 0 ].pageX - windowHalfX;
+					mouseYOnMouseDown = event.touches[ 0 ].pageY - windowHalfY;
+					// targetRotationOnMouseDownX = targetRotationX;
+					// targetRotationOnMouseDownY = targetRotationY;
+					targetPositionXOnMouseDown = targetPositionX;
+					targetPositionYOnMouseDown = targetPositionY;
+
+				}
+
+			}
+
+			function onDocumentTouchMove( event ) {
+
+				if ( event.touches.length === 1 ) {
+
+					event.preventDefault();
+
+					mouseX = event.touches[ 0 ].pageX - windowHalfX;
+					mouseY = event.touches[ 0 ].pageY - windowHalfY;
+					// targetRotationX = targetRotationOnMouseDownX + ( mouseX - mouseXOnMouseDown ) * 0.009;
+					// targetRotationY = targetRotationOnMouseDownY + ( mouseY - mouseYOnMouseDown ) * 0.009;
+					targetPositionX = targetPositionXOnMouseDown + ( mouseX - mouseXOnMouseDown ) * 0.05;
+					targetPositionY = targetPositionYOnMouseDown + ( mouseY - mouseYOnMouseDown ) * -2;
+					speedx += ( targetPositionX - oreo.position.x ) * 0.03;
+					speedy += ( targetPositionY - oreo.position.y ) * 0.02;
+				}
+
+			}
+
+
+
+
+function setUpCanvas(canvas){
+	var canvas = document.getElementById(canvas);
+		width = w = window.innerWidth,
+		height = h = window.innerHeight,
+		canvas.width = width;
+		canvas.height = height;
+		var ctx = canvas.getContext('2d');
+		ctx.w = w;
+		ctx.h = w;
+		var width = window.innerWidth;
+		var height = window.innerHeight;
+		var w = window.innerWidth;
+		var h = window.innerHeight;
+	resize();
+	return ctx;
+
+	function resize() {
+	width = w = window.innerWidth,
+	height = h = window.innerHeight,
+	canvas.width = width;
+	canvas.height = height;
+}
+
+}
+
+
+		</script>
+
+	</body>
+</html>

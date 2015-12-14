@@ -1,0 +1,91 @@
+<!DOCTYPE HTML>
+<html>
+
+  <head>
+    <title>Websockets</title>
+
+
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="js/creative.js"></script>
+  </head>  
+<body style="background: #ccc;"> 
+<div id="status-label">Connecting...</div>
+<input id="text-view">
+<button id="send-button">Send</button>
+<button id="stop-button">Stop</button>
+
+<script>
+var socket;
+if (window.WebSocket) {
+    console.log("WebSockets supported.");
+    // Continue with the rest of the WebSockets-specific functionality…
+    //socket = new WebSocket("ws://echo.websocket.org");
+    socket = new WebSockect('ws://localhost:8080');
+
+    socket.onopen = function(event) {
+      var label = document.getElementById("status-label");
+      label.innerHTML = "Connection established!";
+    }
+
+    socket.onmessage = function (event) {
+    if (typeof event.data === "string") {
+        // The server has sent a string.
+        var label = document.getElementById("status-label");
+        label.innerHTML = "Received: " + event.data;
+    }
+}
+    
+  socket.onclose = function(event) {
+    console.log("Connection closed.");
+    var code = event.code;
+    var reason = event.reason;
+    var wasClean = event.wasClean;
+    var label = document.getElementById("status-label");
+
+    if (wasClean) {
+      label.innerHTML = "Connection closed normally.";
+    }
+    else {
+      label.innerHTML = "Connection closed with message " + reason + "(Code: " + code + ")";
+    }
+}
+    
+  socket.onerror = function(event) {
+  console.log("Error occurred.");
+
+  var label = document.getElementById("status-label");
+  label.innerHTML = "Error: " + event;
+}
+
+}
+else {
+    console.log("WebSockets not supported.");
+    alert("Consider updating your browser for a richer experience.");
+}
+
+
+var textView = document.getElementById("text-view");
+var buttonSend = document.getElementById("send-button");
+
+  buttonSend.onclick = function() {
+  // Check if the connection is open.
+  if (socket.readyState === WebSocket.OPEN) {
+    socket.send(textView.value);
+  }
+
+}
+
+var buttonStop = document.getElementById("stop-button");
+
+buttonStop.onclick = function() {
+  // Close the connection, if open.
+  if (socket.readyState === WebSocket.OPEN) {
+    socket.close();
+  }
+}
+
+
+</script>
+
+</body> 
+</html> 

@@ -135,11 +135,11 @@
 				oreo = new THREE.Object3D();//create an empty container
 
 			var geometry = new THREE.CylinderGeometry( 5, 5, 0.6, 42, false );
-			var material = new THREE.MeshPhongMaterial( {
+			var material = new THREE.MeshBasicMaterial( {
 					//map: map, 
-					color: 0x110000,
-					specular: 0x222222,
-					// shininess: 5,
+					color: 0x231f20,
+					//specular: 0x222222,
+					 shininess: 0,
 					// bumpMap: mapHeight,
 					// bumpScale: 52
 				} );
