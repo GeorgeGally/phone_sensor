@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Oero</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="peer.js"></script>
+	<script src="../../rbvj_pages/js/utils.js"></script>
+	<script src="../../lab/js/jquery.js"></script>
+	<script src="../../lab/js/creative.js"></script>
+</head>
+<body>
+<div class="container">
+
+	<div class="center-box">
+		
+	  	<p id="id_box">Your id is: <span id="my-id">...</span></p>
+	  	<div id="connect_button">
+		  	<p>Ask your friend for their ID and enter it here:</p>
+		  	<input id="connect_id"><br><br>
+		  	<button id="button">Connect</button>
+	  	</div>
+  	</div>
+
+
+
+
+<div id="msg"></div>
+
+</div>
+<canvas id="c"></canvas>
+<script type="text/javascript">
+
+var canvas = document.getElementById('c');
+var ctx = canvas.getContext('2d');
+
+var width = window.innerWidth;
+var height = window.innerHeight - 50;
+var w = window.innerWidth;
+var h = window.innerHeight -50;
+var x = 0; var y = 0;
+resize();
+var conn;
+var firsttime = true;
+var connected = false;
+var friend;
+var connectedPeers = {};
+var my_id = randomInt(9) + "" +  randomInt(9) + "" + randomInt(9)
+var peer = new Peer(
+	my_id, {key: 'k27qn3ydsiwzh0k9'} 
+// debug: 3
+
+);
+peer.on('open', function(id) {
+  //console.log('My peer ID is: ' + id);
+  //my_id = document.getElementById('my-id');
+  $('#my-id').html(id);
+});
+
+peer.on('connection', connect);
+
+peer.on('error', function(err) {
+  console.log(err);
+})
+
+peer.on('data', function(data) {
+    console.log('Received', data);
+    $('#msg').html(data);
+    console.log(data);
+});
+
+peer.on('open', function(){
+	console.log("open");
+})
+
+
+$('#button').click(function(){
+	var id = $('#connect_id').val();
+	//connect(id);
+
+//function connect(id){
+console.log('connecting...');
+conn = peer.connect(id);
+//console.log(conn);
+friend = conn;
+// conn.on('open', function(){
+// 	console.log("open");
+// })
+
+})
+
+
+
+
+function connect(c) {
+
+	console.log("connected!!!!" + c.id);
+	$("#id_box").html("Your friend connected...");
+	console.log(c);
+	 $('#msg').html("connected to: " + c.peer);
+	 //c.send("hello");
+
+
+$(document).mousemove(function( event ) {
+	//console.log(peer.connections);
+	if (firsttime && connected) {
+		firsttime = false;
+		$('.center-box').fadeOut();
+	}
+	if(conn) conn.send(mouseX + "," + mouseY);
+})
+
+c.on('data', function(data) {
+	connected = true;
+  	var res = data.split(",");
+  	x = res[0];
+  	y = res[1];
+  	//console.log(x+ ", "+ y);
+  	//ctx.clearRect(0,0, width, height);
+  	ctx.fillStyle = rgba(0,0,0,0.02);
+  	ctx.fillRect(0, 0, w, h);
+  	ctx.fillStyle = "#990000";
+	ctx.fillRect(x, y, 30, 30);
+    $('#msg').html('<div><span class="peer">' + c.peer + '</span>: ' + data + '</div>');
+});
+
+
+}
+
+
+// Make sure things clean up properly.
+
+window.onunload = window.onbeforeunload = function(e) {
+  if (!!peer && !peer.destroyed) {
+    peer.destroy();
+  }
+};
+
+
+function resize() {
+	width = w = window.innerWidth,
+	height = h = window.innerHeight,
+	canvas.width = width;
+	canvas.height = height;
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>

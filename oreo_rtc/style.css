@@ -1,0 +1,48 @@
+body {
+	background: #43C7F4;
+	font-family: helvetica, arial, sans;
+}
+
+#container {
+	/*position: absolute;
+	z-index: 999;
+	top: 0;
+	left: 0;*/
+}
+
+#c {
+	position: absolute;
+	top: 50px;
+	left: 0;
+	z-index: 0;
+}
+
+.center-box{
+    position: absolute;
+    top: 25%;
+	left: 0;
+	right: 0;
+    text-align: center;
+    z-index: 1;
+    //text-transform: uppercase;
+	color: white;
+}
+
+#id_box {
+	padding: 5px;
+	font-size: 30px;
+	background: rgba(255,255,255,0.4);
+	width: 350px;
+	margin: 0 auto 0 auto;
+	text-align: center;
+	/*border: 1px solid #fff;*/
+}
+input {
+	font-size: 32px;
+	text-align: center;
+}
+
+button {
+	font-size: 22px;
+	text-align: center;
+}
